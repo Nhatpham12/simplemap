@@ -1,0 +1,14 @@
+{
+  "name": "ai-code-pipeline",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Autonomous AI Engineering Pipeline: Code, Review, Fix, Test",
+  "main": "pipeline.js",
+  "scripts": {
+    "start": "node pipeline.js",
+    "review": "node pipeline.js --stage review",
+    "test:stage": "node pipeline.js --stage test",
+    "demo": "node pipeline.js --mock --task \"Tạo component nút điều khiển bản đồ\" --dry-run"
+  }
+}
+

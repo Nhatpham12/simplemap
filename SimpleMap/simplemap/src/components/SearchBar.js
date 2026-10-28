@@ -10,8 +10,10 @@ function SearchBar({ onSearch }) {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5`,
-        { headers: { "User-Agent": "SimpleMapApp/1.0" } }
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          query
+        )}&limit=5`,
+        { headers: { "User-Agent": "SimpleMapApp/2.0" } }
       );
       const data = await res.json();
       setResults(data);
@@ -32,55 +34,65 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <div style={{ display: "flex", gap: "8px" }}>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
-          placeholder="Nhập địa điểm cần đến..."
-          style={{
-            flex: 1,
-            padding: "10px 14px",
-            fontSize: "14px",
-            border: "1px solid #ccc",
-            borderRadius: "6px",
-            outline: "none",
-          }}
-        />
+    <div style={{ position: "relative", width: "100%" }}>
+      <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <div style={{ position: "relative", flex: 1 }}>
+          <span
+            style={{
+              position: "absolute",
+              left: "14px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              fontSize: "16px",
+              color: "var(--text-muted)",
+              pointerEvents: "none",
+            }}
+          >
+            🔍
+          </span>
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            placeholder="Nhập địa chỉ, tên đường hoặc địa danh cần đến..."
+            className="form-input"
+            style={{
+              paddingLeft: "42px",
+              width: "100%",
+              fontSize: "14px",
+              height: "44px",
+            }}
+          />
+        </div>
         <button
           onClick={handleSearch}
           disabled={loading}
-          style={{
-            padding: "10px 18px",
-            fontSize: "14px",
-            backgroundColor: "#4285f4",
-            color: "#fff",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-          }}
+          className="btn-primary"
+          style={{ height: "44px", padding: "0 20px" }}
         >
-          {loading ? "..." : "Tìm"}
+          {loading ? "Đang tìm..." : "Tìm Đường"}
         </button>
       </div>
+
       {results.length > 0 && (
         <ul
           style={{
             position: "absolute",
-            top: "100%",
+            top: "calc(100% + 6px)",
             left: 0,
             right: 0,
-            background: "#fff",
-            border: "1px solid #ccc",
-            borderRadius: "0 0 6px 6px",
+            background: "var(--bg-card)",
+            border: "1px solid var(--border-color)",
+            borderRadius: "12px",
             listStyle: "none",
             margin: 0,
-            padding: 0,
-            zIndex: 1000,
-            maxHeight: "200px",
+            padding: "6px",
+            zIndex: 1500,
+            maxHeight: "240px",
             overflowY: "auto",
+            boxShadow: "var(--shadow-lg)",
+            backdropFilter: "blur(16px)",
           }}
         >
           {results.map((item, i) => (
@@ -90,14 +102,27 @@ function SearchBar({ onSearch }) {
               style={{
                 padding: "10px 14px",
                 cursor: "pointer",
-                borderBottom: "1px solid #eee",
+                borderRadius: "8px",
                 fontSize: "13px",
-                textAlign: "left",
+                color: "var(--text-main)",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                transition: "background-color 0.15s ease",
               }}
-              onMouseEnter={(e) => (e.target.style.backgroundColor = "#f0f0f0")}
-              onMouseLeave={(e) => (e.target.style.backgroundColor = "#fff")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "rgba(59, 130, 246, 0.1)";
+                e.currentTarget.style.color = "var(--primary)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "transparent";
+                e.currentTarget.style.color = "var(--text-main)";
+              }}
             >
-              {item.display_name}
+              <span>📍</span>
+              <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                {item.display_name}
+              </span>
             </li>
           ))}
         </ul>

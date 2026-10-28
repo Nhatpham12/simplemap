@@ -1,0 +1,29 @@
+# Secrets & Credentials (NEVER COMMIT)
+*.pem
+*.key
+*token*.txt
+ssh.txt
+.env*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Node / JS
+node_modules/
+build/
+dist/
+*.log
+
+# Other subprojects in WEB workspace (simplemap repository only tracks SimpleMap)
+4T_Music/
+learn/
+microservice/
+myEcommerce/
+REACTJS/
+SimpleChat/
+VISITALK/
+Wexa/
+Test1*

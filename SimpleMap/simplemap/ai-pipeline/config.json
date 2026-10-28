@@ -1,0 +1,13 @@
+{
+  "provider": "gemini",
+  "geminiModel": "gemini-2.5-flash",
+  "openaiModel": "gpt-4o-mini",
+  "maxIterations": 3,
+  "testCommand": "npm test -- --watchAll=false",
+  "buildCommand": "npm run build",
+  "sourceDir": "src",
+  "strictReview": false,
+  "autoApplyFix": true,
+  "verbose": true
+}
+

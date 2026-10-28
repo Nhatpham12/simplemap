@@ -1,0 +1,45 @@
+name: AI Code Review, Fix & Test Pipeline
+
+on:
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      task:
+        description: 'Task description (Optional)'
+        required: false
+        default: ''
+
+jobs:
+  ai-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          cache-dependency-path: 'simplemap/package-lock.json'
+
+      - name: Install dependencies
+        working-directory: ./simplemap
+        run: npm ci
+
+      - name: Run AI Review & Verification Pipeline
+        working-directory: ./simplemap
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          CI: 'true'
+        run: |
+          if [ -n "${{ github.event.inputs.task }}" ]; then
+            node ai-pipeline/pipeline.js --task "${{ github.event.inputs.task }}"
+          else
+            node ai-pipeline/pipeline.js --stage all
+          fi
+
